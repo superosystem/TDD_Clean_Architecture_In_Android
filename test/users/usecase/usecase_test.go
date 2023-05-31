@@ -1,4 +1,4 @@
-package users__test
+package usecase_test
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -18,7 +18,6 @@ var (
 
 func TestMain(m *testing.M) {
 	userRepo = mocks.Repository{Mock: mock.Mock{}}
-
 	userUseCase = users.NewUserUseCase(&userRepo)
 
 	userDomain = users.Domain{

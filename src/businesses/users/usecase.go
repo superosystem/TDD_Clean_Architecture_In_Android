@@ -21,7 +21,7 @@ func (u UserUseCase) SignUp(domain *Domain) error {
 	// CHECK EMAIL IS_EXIST
 	user, _ := u.userRepository.GetByEmail(domain.Email)
 	if user != nil {
-		return err
+		return constant.ErrEmailAlreadyExist
 	}
 	// HASHED PASSWORD
 	if len(domain.Password) < 6 {

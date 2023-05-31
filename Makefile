@@ -5,7 +5,7 @@ run-dev:
 	go run ./src/main.go
 
 run-prod:
-	./dist/engine
+	./target/engine
 
 ##### TESTING
 run-test:

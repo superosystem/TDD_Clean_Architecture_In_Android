@@ -10,21 +10,21 @@ import (
 	"net/http"
 )
 
-type UserController struct {
+type Controller struct {
 	userUseCase users.UseCase
 }
 
-func NewUserController(uc users.UseCase) *UserController {
-	return &UserController{
+func NewUserController(uc users.UseCase) *Controller {
+	return &Controller{
 		userUseCase: uc,
 	}
 }
 
-func (c *UserController) HelloMessage(ctx echo.Context) error {
+func (c *Controller) HelloMessage(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, "Welcome to Bantu Manten API.")
 }
 
-func (c *UserController) SignUp(ctx echo.Context) error {
+func (c *Controller) SignUp(ctx echo.Context) error {
 	input := request.User{}
 
 	if err := ctx.Bind(&input); err != nil {
@@ -56,12 +56,12 @@ func (c *UserController) SignUp(ctx echo.Context) error {
 		}
 	}
 
-	return ctx.JSON(http.StatusOK,
+	return ctx.JSON(http.StatusCreated,
 		helper.SuccessCreatedResponse("user has been created", nil))
 }
 
 //
-//func (c *UserController) SignIn(ctx echo.Context) error {
+//func (c *Controller) SignIn(ctx echo.Context) error {
 //	input := request.SignIn{}
 //
 //	if err := ctx.Bind(&input); err != nil {

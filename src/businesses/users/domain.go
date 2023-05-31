@@ -6,15 +6,16 @@ import (
 )
 
 type Domain struct {
-	ID        uint
-	FullName  string
-	Email     string
-	Password  string
-	Photo     string
-	Roles     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt
+	ID          uint
+	FullName    string
+	Email       string
+	Password    string
+	PhoneNumber string
+	Photo       string
+	Roles       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt
 }
 
 type SignUpDomain struct {

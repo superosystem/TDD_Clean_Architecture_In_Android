@@ -10,6 +10,7 @@ type User struct {
 	Email                string `json:"email" validate:"required,email,lowercase"`
 	Password             string `json:"password" validate:"required"`
 	ConfirmationPassword string `json:"confirmation_password" validate:"required"`
+	PhoneNumber          string `json:"phone_number"`
 	Photo                string `json:"photo" form:"photo"`
 	Roles                string `json:"roles"`
 }

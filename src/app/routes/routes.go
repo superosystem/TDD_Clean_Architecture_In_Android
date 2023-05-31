@@ -18,9 +18,10 @@ type Config struct {
 }
 
 func (cfg *Config) Start() {
+	registerUserRoute(cfg)
 }
 
-func userRoutes(cfg *Config) {
+func registerUserRoute(cfg *Config) {
 	// USER DI
 	userRepository := _driver.NewUserRepository(cfg.MySQLCONN)
 	userUseCase := _userUseCase.NewUserUseCase(userRepository)
@@ -30,6 +31,4 @@ func userRoutes(cfg *Config) {
 	v1 := cfg.Echo.Group("/api/v1")
 	auth := v1.Group("/auth")
 	auth.POST("/register", userController.SignUp)
-	auth.POST("/login", userController.SignUp)
-
 }
