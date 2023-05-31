@@ -20,11 +20,18 @@ type SignIn struct {
 	Password string `json:"password" validate:"required"`
 }
 
+type UserUpdate struct {
+	FullName    string `json:"full_name" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"required"`
+	Photo       string `json:"photo" form:"photo"`
+}
+
 func (req *User) ToDomainSignUp() *users.Domain {
 	return &users.Domain{
-		FullName: req.FullName,
-		Email:    req.Email,
-		Password: req.Password,
+		FullName:    req.FullName,
+		Email:       req.Email,
+		Password:    req.Password,
+		PhoneNumber: req.PhoneNumber,
 	}
 }
 
@@ -32,6 +39,14 @@ func (req *SignIn) ToDomainSignIn() *users.SignInDomain {
 	return &users.SignInDomain{
 		Email:    req.Email,
 		Password: req.Password,
+	}
+}
+
+func (req *UserUpdate) ToDomainUserUpdate() users.Domain {
+	return users.Domain{
+		FullName:    req.FullName,
+		PhoneNumber: req.PhoneNumber,
+		Photo:       req.Photo,
 	}
 }
 

@@ -75,9 +75,30 @@ func (u UserUseCase) SignIn(domain *SignInDomain) (interface{}, error) {
 	return data, nil
 }
 
-func (u UserUseCase) Update(ID string, domain *Domain) (*Domain, error) {
-	//TODO implement me
-	panic("implement me")
+func (u UserUseCase) Update(ID string, domain Domain) (*Domain, error) {
+	user, err := u.userRepository.GetByID(ID)
+	if err != nil {
+		return nil, err
+	}
+
+	if domain.FullName != "" {
+		user.FullName = domain.FullName
+	}
+
+	if domain.PhoneNumber != "" {
+		user.PhoneNumber = domain.PhoneNumber
+	}
+
+	if domain.Photo != "" {
+		user.Photo = domain.Photo
+	}
+
+	userUpdated, err := u.userRepository.Update(ID, domain)
+	if err != nil {
+		return nil, err
+	}
+
+	return userUpdated, nil
 }
 
 func (u UserUseCase) Delete(ID string) bool {
@@ -85,17 +106,30 @@ func (u UserUseCase) Delete(ID string) bool {
 	panic("implement me")
 }
 
-func (u UserUseCase) GetAll() []Domain {
-	//TODO implement me
-	panic("implement me")
+func (u UserUseCase) GetAll() *[]Domain {
+	users := u.userRepository.GetAll()
+
+	return users
 }
 
 func (u UserUseCase) GetByID(ID string) (*Domain, error) {
-	//TODO implement me
-	panic("implement me")
+	user, err := u.userRepository.GetByID(ID)
+	if err != nil {
+		if err == constant.ErrUserNotFound {
+			return nil, constant.ErrUserNotFound
+		}
+		return nil, constant.ErrInternalServerError
+	}
+	return user, nil
 }
 
 func (u UserUseCase) GetByEmail(email string) (*Domain, error) {
-	//TODO implement me
-	panic("implement me")
+	user, err := u.userRepository.GetByEmail(email)
+	if err != nil {
+		if err == constant.ErrUserNotFound {
+			return nil, constant.ErrUserNotFound
+		}
+		return nil, constant.ErrInternalServerError
+	}
+	return user, nil
 }

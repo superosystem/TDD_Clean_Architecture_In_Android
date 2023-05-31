@@ -26,12 +26,12 @@ func (m *AuthMiddleware) IsUserRole(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if err != nil {
 			return ctx.JSON(http.StatusUnauthorized,
-				helper.UnauthorizedResponse(err.Error()))
+				helper.MessageErrorResponse(err.Error()))
 		}
 
 		if payload.Role != "USER" {
 			return ctx.JSON(http.StatusForbidden,
-				helper.ForbiddenResponse(constant.ErrAccessForbidden.Error()))
+				helper.MessageErrorResponse(constant.ErrAccessForbidden.Error()))
 		}
 
 		return next(ctx)
@@ -45,12 +45,12 @@ func (m *AuthMiddleware) IsAdminRole(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if err != nil {
 			return ctx.JSON(http.StatusUnauthorized,
-				helper.UnauthorizedResponse(err.Error()))
+				helper.MessageErrorResponse(err.Error()))
 		}
 
 		if payload.Role != "ADMIN" {
 			return ctx.JSON(http.StatusForbidden,
-				helper.ForbiddenResponse(constant.ErrAccessForbidden.Error()))
+				helper.MessageErrorResponse(constant.ErrAccessForbidden.Error()))
 		}
 
 		return next(ctx)

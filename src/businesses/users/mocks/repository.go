@@ -41,15 +41,15 @@ func (_m *Repository) Delete(ID string) bool {
 }
 
 // GetAll provides a mock function with given fields:
-func (_m *Repository) GetAll() []users.Domain {
+func (_m *Repository) GetAll() *[]users.Domain {
 	ret := _m.Called()
 
-	var r0 []users.Domain
-	if rf, ok := ret.Get(0).(func() []users.Domain); ok {
+	var r0 *[]users.Domain
+	if rf, ok := ret.Get(0).(func() *[]users.Domain); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]users.Domain)
+			r0 = ret.Get(0).(*[]users.Domain)
 		}
 	}
 

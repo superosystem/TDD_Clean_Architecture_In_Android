@@ -30,7 +30,7 @@ func registerUserRoute(cfg *Config, authMiddleware *middleware.AuthMiddleware) {
 	// USER DI
 	userRepository := _driver.NewUserRepository(cfg.MySQLCONN)
 	userUseCase := _userUseCase.NewUserUseCase(userRepository, cfg.JwtConfig)
-	userController := _userController.NewUserController(userUseCase)
+	userController := _userController.NewUserController(userUseCase, cfg.JwtConfig)
 
 	// ROUTES
 	v1 := cfg.Echo.Group("/api/v1")
@@ -39,6 +39,9 @@ func registerUserRoute(cfg *Config, authMiddleware *middleware.AuthMiddleware) {
 	auth.POST("/login", userController.SignIn)
 
 	user := v1.Group("/users", authMiddleware.IsAuthenticated())
-	user.GET("", userController.HelloMessage, authMiddleware.IsAdminRole)
+	user.GET("", userController.FindAll, authMiddleware.IsAdminRole)
+	user.GET("/:id", userController.FindByID, authMiddleware.IsAdminRole)
+	user.GET("/:email", userController.FindByEmail, authMiddleware.IsAdminRole)
+	user.PUT("", userController.Update)
 
 }

@@ -28,9 +28,15 @@ func (u userRepository) Create(domain *users.Domain) error {
 	return nil
 }
 
-func (u userRepository) Update(ID string, domain *users.Domain) (*users.Domain, error) {
-	//TODO implement me
-	panic("implement me")
+func (u userRepository) Update(ID string, domain users.Domain) (*users.Domain, error) {
+	rec := FromDomain(&domain)
+
+	err := u.conn.Model(User{}).Where("id = ?", ID).Updates(&rec).Error
+	if err != nil {
+		return nil, err
+	}
+	u.conn.Model(User{}).Where("id = ?", ID).First(&rec)
+	return rec.ToDomain(), nil
 }
 
 func (u userRepository) Delete(ID string) bool {
@@ -38,14 +44,31 @@ func (u userRepository) Delete(ID string) bool {
 	panic("implement me")
 }
 
-func (u userRepository) GetAll() []users.Domain {
-	//TODO implement me
-	panic("implement me")
+func (u userRepository) GetAll() *[]users.Domain {
+	var rec []User
+
+	u.conn.Model(&User{}).Find(&rec)
+
+	var usersDomain []users.Domain
+
+	for _, user := range rec {
+		usersDomain = append(usersDomain, *user.ToDomain())
+	}
+
+	return &usersDomain
 }
 
 func (u userRepository) GetByID(ID string) (*users.Domain, error) {
-	//TODO implement me
-	panic("implement me")
+	var rec = User{}
+
+	err := u.conn.Model(User{}).Where("id = ?", ID).First(&rec).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, constant.ErrUserNotFound
+		}
+	}
+
+	return rec.ToDomain(), nil
 }
 
 func (u userRepository) GetByEmail(email string) (*users.Domain, error) {
@@ -59,9 +82,4 @@ func (u userRepository) GetByEmail(email string) (*users.Domain, error) {
 	}
 
 	return rec.ToDomain(), nil
-}
-
-func (u userRepository) IsExistUser(ID, email string) bool {
-	//TODO implement me
-	panic("implement me")
 }

@@ -9,6 +9,10 @@ type BaseResponse struct {
 	Data    interface{} `json:"data"`
 }
 
+type BaseMessageResponse struct {
+	Message string `json:"message"`
+}
+
 // SuccessResponse format on response success
 func SuccessResponse(message string, data interface{}) BaseResponse {
 	return BaseResponse{
@@ -20,12 +24,11 @@ func SuccessResponse(message string, data interface{}) BaseResponse {
 }
 
 // SuccessCreatedResponse format on response success created
-func SuccessCreatedResponse(message string, data interface{}) BaseResponse {
+func SuccessCreatedResponse(message string) BaseResponse {
 	return BaseResponse{
 		Code:    http.StatusCreated,
 		Status:  "success",
 		Message: message,
-		Data:    data,
 	}
 }
 
@@ -35,7 +38,6 @@ func BadRequestResponse(message string) BaseResponse {
 		Code:    http.StatusBadRequest,
 		Status:  "error",
 		Message: message,
-		Data:    nil,
 	}
 }
 
@@ -45,7 +47,6 @@ func NotFoundResponse(message string) BaseResponse {
 		Code:    http.StatusNotFound,
 		Status:  "error",
 		Message: message,
-		Data:    nil,
 	}
 }
 
@@ -55,7 +56,6 @@ func UnauthorizedResponse(message string) BaseResponse {
 		Code:    http.StatusUnauthorized,
 		Status:  "error",
 		Message: message,
-		Data:    nil,
 	}
 }
 
@@ -65,7 +65,6 @@ func ForbiddenResponse(message string) BaseResponse {
 		Code:    http.StatusForbidden,
 		Status:  "error",
 		Message: message,
-		Data:    nil,
 	}
 }
 
@@ -75,7 +74,6 @@ func ConflictResponse(message string) BaseResponse {
 		Code:    http.StatusConflict,
 		Status:  "error",
 		Message: message,
-		Data:    nil,
 	}
 }
 
@@ -85,6 +83,12 @@ func InternalServerErrorResponse(message string) BaseResponse {
 		Code:    http.StatusInternalServerError,
 		Status:  "error",
 		Message: message,
-		Data:    nil,
+	}
+}
+
+// MessageResponse format on response error
+func MessageErrorResponse(message string) BaseMessageResponse {
+	return BaseMessageResponse{
+		Message: message,
 	}
 }

@@ -35,20 +35,19 @@ type TokenDomain struct {
 
 type Repository interface {
 	Create(domain *Domain) error
-	Update(ID string, domain *Domain) (*Domain, error)
+	Update(ID string, domain Domain) (*Domain, error)
 	Delete(ID string) bool
-	GetAll() []Domain
+	GetAll() *[]Domain
 	GetByID(ID string) (*Domain, error)
 	GetByEmail(email string) (*Domain, error)
-	IsExistUser(ID, email string) bool
 }
 
 type UseCase interface {
 	SignUp(domain *Domain) error
 	SignIn(domain *SignInDomain) (interface{}, error)
-	Update(ID string, domain *Domain) (*Domain, error)
+	Update(ID string, domain Domain) (*Domain, error)
 	Delete(ID string) bool
-	GetAll() []Domain
+	GetAll() *[]Domain
 	GetByID(ID string) (*Domain, error)
 	GetByEmail(email string) (*Domain, error)
 }
