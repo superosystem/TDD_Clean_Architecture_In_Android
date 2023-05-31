@@ -3,6 +3,7 @@ package usecase_test
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/superosystem/bantumanten-backend/src/app/config"
 	"github.com/superosystem/bantumanten-backend/src/app/constant"
 	"github.com/superosystem/bantumanten-backend/src/businesses/users"
 	"github.com/superosystem/bantumanten-backend/src/businesses/users/mocks"
@@ -14,11 +15,12 @@ var (
 	userDomain  users.Domain
 	userRepo    mocks.Repository
 	userUseCase users.UseCase
+	jwtConfig   config.JWTConfig
 )
 
 func TestMain(m *testing.M) {
 	userRepo = mocks.Repository{Mock: mock.Mock{}}
-	userUseCase = users.NewUserUseCase(&userRepo)
+	userUseCase = users.NewUserUseCase(&userRepo, &jwtConfig)
 
 	userDomain = users.Domain{
 		ID:        1,

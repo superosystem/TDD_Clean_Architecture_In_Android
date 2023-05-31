@@ -7,6 +7,9 @@ var (
 	// ErrAuthenticationFailed error wrong authentication data
 	ErrAuthenticationFailed = errors.New("email or password is wrong")
 
+	// ErrAuthenticationFailed error wrong authentication data
+	ErrWrongPassword = errors.New("password is wrong")
+
 	// ErrEmailAlreadyExist error email already exist
 	ErrEmailAlreadyExist = errors.New("email already used")
 

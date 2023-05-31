@@ -23,10 +23,14 @@ type SignUpDomain struct {
 	Email    string
 	Password string
 }
+
 type SignInDomain struct {
-	FullName string
 	Email    string
 	Password string
+}
+
+type TokenDomain struct {
+	Token string
 }
 
 type Repository interface {
@@ -41,7 +45,7 @@ type Repository interface {
 
 type UseCase interface {
 	SignUp(domain *Domain) error
-	SignIn(domain *SignInDomain) (*Domain, error)
+	SignIn(domain *SignInDomain) (interface{}, error)
 	Update(ID string, domain *Domain) (*Domain, error)
 	Delete(ID string) bool
 	GetAll() []Domain

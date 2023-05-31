@@ -20,7 +20,7 @@ type SignIn struct {
 	Password string `json:"password" validate:"required"`
 }
 
-func (req *User) ToDomainRegister() *users.Domain {
+func (req *User) ToDomainSignUp() *users.Domain {
 	return &users.Domain{
 		FullName: req.FullName,
 		Email:    req.Email,
@@ -28,7 +28,7 @@ func (req *User) ToDomainRegister() *users.Domain {
 	}
 }
 
-func (req *SignIn) ToDomainLogin() *users.SignInDomain {
+func (req *SignIn) ToDomainSignIn() *users.SignInDomain {
 	return &users.SignInDomain{
 		Email:    req.Email,
 		Password: req.Password,

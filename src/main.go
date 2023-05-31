@@ -29,6 +29,9 @@ func main() {
 	mysqlDB := cfgDB.InitMySQLDatabase()
 	_dbDriver.MySQLAutoMigrate(mysqlDB)
 
+	// JWT SETUP
+	jwtConfig := _config.NewJWTConfig(_config.GetEnvValue("JWT_SECRET_KEY"))
+
 	ctx := context.Background()
 
 	// ECHO
@@ -37,6 +40,7 @@ func main() {
 	route := routes.Config{
 		Echo:      e,
 		MySQLCONN: mysqlDB,
+		JwtConfig: jwtConfig,
 	}
 	route.Start()
 

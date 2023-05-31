@@ -12,6 +12,10 @@ type User struct {
 	DeletedAt string `json:"deleted_at"`
 }
 
+type Token struct {
+	Token string `json:"token"`
+}
+
 func FromDomain(domain users.Domain) User {
 	return User{
 		ID:        domain.ID,
