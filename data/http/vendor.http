@@ -1,7 +1,7 @@
 ### Create Vendor Venue
 POST http://localhost:8080/api/v1/vendors
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{auth_token_admin}}
 
 {
   "name": "Alpha Venue",
@@ -15,7 +15,7 @@ Authorization: Bearer {{auth_token}}
 ### Create Vendor Decoration
 POST http://localhost:8080/api/v1/vendors
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{auth_token_admin}}
 
 {
   "name": "Mama Decoration",
@@ -29,7 +29,7 @@ Authorization: Bearer {{auth_token}}
 ### Create Vendor Catering
 POST http://localhost:8080/api/v1/vendors
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{auth_token_admin}}
 
 {
   "name": "Alphabert Catering",
@@ -44,7 +44,7 @@ Authorization: Bearer {{auth_token}}
 ### Create Vendor MUA
 POST http://localhost:8080/api/v1/vendors
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{auth_token_admin}}
 
 {
   "name": "Cece MUA",
@@ -58,7 +58,7 @@ Authorization: Bearer {{auth_token}}
 ### Create Vendor Documentary
 POST http://localhost:8080/api/v1/vendors
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{auth_token_admin}}
 
 {
   "name": "Brother Media",
@@ -68,3 +68,32 @@ Authorization: Bearer {{auth_token}}
   "description": "test test",
   "image": ""
 }
+
+### Update Vendor Catering
+PUT http://localhost:8080/api/v1/vendors/5
+Content-Type: application/json
+Authorization: Bearer {{auth_token_admin}}
+
+{
+  "name": "Alpha Update Catering",
+  "price": 40000000,
+  "vendor_type": "CATERING",
+  "address": "Jakarta Indonesia",
+  "description": "test test",
+  "image": ""
+}
+
+### Get All Vendor
+GET http://localhost:8080/api/v1/vendors
+Content-Type: application/json
+Authorization: Bearer {{auth_token_admin}}
+
+### Get All Vendor By Type {{FAILED}}
+GET http://localhost:8080/api/v1/vendors/VENUE
+Content-Type: application/json
+Authorization: Bearer {{auth_token_admin}}
+
+### Get Vendor By ID {{FAILED}}
+GET http://localhost:8080/api/v1/vendors/5
+Content-Type: application/json
+Authorization: Bearer {{auth_token_admin}}

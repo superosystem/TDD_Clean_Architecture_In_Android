@@ -28,5 +28,4 @@ func FromDomain(domain vendors.Domain) Vendor {
 		UpdatedAt:   domain.UpdatedAt.Format("02-01-2006 15:04:05"),
 		DeletedAt:   domain.DeletedAt.Time.Format("02-01-2006 15:04:05"),
 	}
-
 }

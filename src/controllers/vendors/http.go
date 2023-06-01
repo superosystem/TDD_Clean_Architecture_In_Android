@@ -66,10 +66,6 @@ func (c *Controller) Create(ctx echo.Context) error {
 
 func (c *Controller) Update(ctx echo.Context) error {
 	var ID string = ctx.Param("id")
-	if err := ctx.Bind(&ID); err != nil {
-		return ctx.JSON(http.StatusBadRequest,
-			helper.MessageErrorResponse(constant.ErrInvalidRequest.Error()))
-	}
 
 	input := request.Vendor{}
 	if err := ctx.Bind(&input); err != nil {
@@ -114,10 +110,6 @@ func (c *Controller) FindAll(ctx echo.Context) error {
 
 func (c *Controller) FindByID(ctx echo.Context) error {
 	var ID string = ctx.Param("id")
-	if err := ctx.Bind(&ID); err != nil {
-		return ctx.JSON(http.StatusBadRequest,
-			helper.MessageErrorResponse(constant.ErrInvalidRequest.Error()))
-	}
 
 	rec, err := c.vendorUseCase.GetByID(ID)
 	if err != nil {
@@ -133,10 +125,6 @@ func (c *Controller) FindByID(ctx echo.Context) error {
 
 func (c *Controller) FindByName(ctx echo.Context) error {
 	var name = ctx.Param("name")
-	if err := ctx.Bind(&name); err != nil {
-		return ctx.JSON(http.StatusBadRequest,
-			helper.MessageErrorResponse(constant.ErrInvalidRequest.Error()))
-	}
 
 	rec, err := c.vendorUseCase.GetByName(name)
 	if err != nil {
@@ -152,31 +140,31 @@ func (c *Controller) FindByName(ctx echo.Context) error {
 
 func (c *Controller) FindByType(ctx echo.Context) error {
 	var vendorType string = ctx.Param("type")
+
+	//var currVendorType bool
+	//switch vendorType {
+	//case constant.VENUE:
+	//	currVendorType = true
+	//case constant.DECORATION:
+	//	currVendorType = true
+	//case constant.CATERING:
+	//	currVendorType = true
+	//case constant.DOCUMENTARY:
+	//	currVendorType = true
+	//default:
+	//	currVendorType = false
+	//}
+	//
+	//if currVendorType == false {
+	//	return ctx.JSON(http.StatusNotFound, helper.MessageErrorResponse(constant.ErrRecordNotFound.Error()))
+	//}
+
 	var data []response.Vendor
-
-	var currVendorType bool
-	switch vendorType {
-	case constant.VENUE:
-		currVendorType = true
-	case constant.DECORATION:
-		currVendorType = true
-	case constant.CATERING:
-		currVendorType = true
-	case constant.DOCUMENTARY:
-		currVendorType = true
-	default:
-		currVendorType = false
-	}
-
-	if currVendorType == false {
-		return ctx.JSON(http.StatusNotFound, helper.MessageErrorResponse(constant.ErrRecordNotFound.Error()))
-	}
-
 	vendorsData := c.vendorUseCase.GetByType(vendorType)
 
 	for _, vendor := range *vendorsData {
 		data = append(data, response.FromDomain(vendor))
 	}
 
-	return ctx.JSON(http.StatusOK, data)
+	return ctx.JSON(http.StatusOK, vendorType)
 }

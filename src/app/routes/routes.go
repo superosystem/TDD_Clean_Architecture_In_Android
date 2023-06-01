@@ -48,7 +48,7 @@ func (cfg *Config) Start() {
 	transactionController := _transactionController.NewTransactionController(transactionUseCase)
 
 	// ROUTES V1
-	v1 := cfg.Echo.Group("/http/v1")
+	v1 := cfg.Echo.Group("/api/v1")
 	v1.GET("", userController.HelloMessage)
 	// AUTH ROUTES
 	auth := v1.Group("")
@@ -64,7 +64,7 @@ func (cfg *Config) Start() {
 	// VENDOR ROUTES
 	vendor := v1.Group("/vendors", authMiddleware.IsAuthenticated())
 	vendor.POST("", vendorController.Create, authMiddleware.IsAdminRole)
-	vendor.PUT("", vendorController.Update, authMiddleware.IsAdminRole)
+	vendor.PUT("/:id", vendorController.Update, authMiddleware.IsAdminRole)
 	vendor.GET("", vendorController.FindAll, authMiddleware.IsAdminRole)
 	vendor.GET("/:type", vendorController.FindByType)
 	vendor.GET("/:id", vendorController.FindByID)

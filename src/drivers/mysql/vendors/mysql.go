@@ -91,7 +91,12 @@ func (r repository) GetByName(name string) (*vendors.Domain, error) {
 func (r repository) GetByType(vendorType string) *[]vendors.Domain {
 	var rec []Vendor
 
-	r.conn.Model(&Vendor{}).Where("vendor_type = ?", vendorType).Find(&rec)
+	err := r.conn.Model(&Vendor{}).Where("vendor_type = ?", vendorType).Find(&rec).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
+	}
 
 	var vendorsDomain []vendors.Domain
 
