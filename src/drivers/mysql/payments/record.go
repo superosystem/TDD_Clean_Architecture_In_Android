@@ -11,7 +11,7 @@ type Payment struct {
 	ID              uint   `json:"id" gorm:"primaryKey"`
 	ReferenceNumber string `json:"reference_number" gorm:"type:varchar(100);unique;not_null"`
 	Amount          uint   `json:"amount" gorm:"not_null"`
-	Status          string `json:"status" gorm:"type:enum('SUCCESS', 'PENDING', 'ROLLBACK')" json:"status"`
+	Status          string `json:"status" gorm:"type:enum('SUCCESS', 'PROCESS', 'PENDING', 'CANCELLED', 'ROLLBACK')" json:"status"`
 	PaymentMethod   string `json:"payment_method" gorm:"type:enum('BANK', 'VA', 'MERCHANT')" json:"payment_method"`
 	TransactionID   uint   `json:"transaction_id" gorm:"not_null"`
 	CreatedAt       time.Time

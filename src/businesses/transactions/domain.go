@@ -20,9 +20,14 @@ type Domain struct {
 }
 
 type Repository interface {
-	Create(domain *Domain) error
+	Create(domain *Domain) (*Domain, error)
 	Update(ID string, domain Domain) (*Domain, error)
 	GetAll() *[]Domain
 	GetByID(ID string) (*Domain, error)
 	GetByReferenceNumber(referenceNumber string) (*Domain, error)
+}
+
+type UseCase interface {
+	Create(domain *Domain) (*Domain, error)
+	GetAll() *[]Domain
 }

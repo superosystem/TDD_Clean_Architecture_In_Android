@@ -82,9 +82,7 @@ func (r repository) GetByName(name string) (*vendors.Domain, error) {
 
 	err := r.conn.Model(Vendor{}).Where("name = ?", name).Find(&rec).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, constant.ErrRecordNotFound
-		}
+		return nil, constant.ErrRecordNotFound
 	}
 
 	return rec.ToDomain(), nil

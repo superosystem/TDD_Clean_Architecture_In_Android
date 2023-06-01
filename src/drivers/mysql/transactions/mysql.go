@@ -17,15 +17,12 @@ func NewMySQLRepository(conn *gorm.DB) transactions.Repository {
 	}
 }
 
-func (r repository) Create(domain *transactions.Domain) error {
+func (r repository) Create(domain *transactions.Domain) (*transactions.Domain, error) {
 	rec := FromDomain(domain)
 
-	err := r.conn.Model(Transaction{}).Create(&rec).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
+	result := r.conn.Model(Transaction{}).Create(&rec)
+	result.Last(rec)
+	return rec.ToDomain(), nil
 }
 
 func (r repository) Update(ID string, domain transactions.Domain) (*transactions.Domain, error) {

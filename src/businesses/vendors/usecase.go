@@ -1,19 +1,16 @@
 package vendors
 
 import (
-	"github.com/superosystem/bantumanten-backend/src/app/config"
 	"github.com/superosystem/bantumanten-backend/src/app/constant"
 )
 
 type VendorUseCase struct {
 	vendorRepository Repository
-	jwtConfig        *config.JWTConfig
 }
 
-func NewVendorUseCase(vr Repository, jwt *config.JWTConfig) UseCase {
+func NewVendorUseCase(vr Repository) UseCase {
 	return &VendorUseCase{
 		vendorRepository: vr,
-		jwtConfig:        jwt,
 	}
 }
 

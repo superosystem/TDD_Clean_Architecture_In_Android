@@ -2,6 +2,7 @@ package orders
 
 import (
 	"github.com/superosystem/bantumanten-backend/src/app/constant"
+	"github.com/superosystem/bantumanten-backend/src/businesses/users"
 	"github.com/superosystem/bantumanten-backend/src/businesses/vendors"
 	"strconv"
 	"time"
@@ -10,39 +11,34 @@ import (
 type OrderUseCase struct {
 	orderRepository  Repository
 	vendorRepository vendors.Repository
+	userRepository   users.Repository
 }
 
 func NewOrderUseCase(
 	or Repository,
 	vr vendors.Repository,
+	ur users.Repository,
 ) UseCase {
 	return &OrderUseCase{
 		orderRepository:  or,
 		vendorRepository: vr,
+		userRepository:   ur,
 	}
 }
 
-func (u OrderUseCase) Create(domain *Domain) error {
+func (u OrderUseCase) Create(domain *Domain) (*Domain, error) {
 	var err error
-	// Generate RF
+	// Create Order
 	domain.ReferenceNumber = generateReferenceNumber(domain.UserID)
-	// Setup Price
-	domain.VenuePrice, err = u.getVendorPrice(domain.Venue)
-	domain.DecorationPrice, err = u.getVendorPrice(domain.Decoration)
-	domain.CateringPrice, err = u.getVendorPrice(domain.Catering)
-	domain.MuaPrice, err = u.getVendorPrice(domain.Mua)
-	domain.DocumentaryPrice, err = u.getVendorPrice(domain.Documentary)
-	if err != nil {
-		return err
-	}
+	domain.Status = constant.TRANSACTION_PENDING
 	domain.TotalAmount = domain.VenuePrice + domain.DecorationPrice + domain.CateringPrice + domain.MuaPrice + domain.DocumentaryPrice
-	// Save Order
-	err = u.orderRepository.Create(domain)
+
+	order, err := u.orderRepository.Create(domain)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return order, nil
 }
 
 func (u OrderUseCase) Update(ID string, domain Domain) (*Domain, error) {
@@ -79,14 +75,6 @@ func (u OrderUseCase) GetByReferenceNumber(referenceNumber string) (*Domain, err
 		return nil, constant.ErrInternalServerError
 	}
 	return order, nil
-}
-
-func (u OrderUseCase) getVendorPrice(name string) (uint, error) {
-	vendor, err := u.vendorRepository.GetByName(name)
-	if err != nil {
-		return 0, err
-	}
-	return vendor.Price, nil
 }
 
 func generateReferenceNumber(userId uint) string {

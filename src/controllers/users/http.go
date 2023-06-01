@@ -136,7 +136,22 @@ func (c *Controller) FindByEmail(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, response.FromDomain(*rec))
 }
 
-func (c *Controller) Update(ctx echo.Context) error {
+func (c *Controller) FindProfile(ctx echo.Context) error {
+	token, _ := c.jwtConfig.ExtractToken(ctx)
+
+	rec, err := c.userUseCase.GetByID(token.UserId)
+	if err != nil {
+		if errors.Is(err, constant.ErrUserNotFound) {
+			return ctx.JSON(http.StatusNotFound, helper.MessageErrorResponse(constant.ErrUserNotFound.Error()))
+		} else {
+			return ctx.JSON(http.StatusInternalServerError, helper.MessageErrorResponse(err.Error()))
+		}
+	}
+
+	return ctx.JSON(http.StatusOK, response.FromDomain(*rec))
+}
+
+func (c *Controller) UpdateProfile(ctx echo.Context) error {
 	token, _ := c.jwtConfig.ExtractToken(ctx)
 
 	input := request.UserUpdate{}

@@ -26,3 +26,7 @@ run-docker:
 
 stop-docker:
 	docker compose down
+
+#### CURL
+curl-post:
+	curl -X POST -H "Content-Type: application/json" -d @./data/api/order/create_order.json http://localhost:8080/api/v1/orders

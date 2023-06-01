@@ -47,7 +47,7 @@ package controller_test
 //
 //	t.Run("SIGN UP | SUCCESS", func(t *testing.T) {
 //		e := echo.New()
-//		req := httptest.NewRequest(http.MethodPost, "/api/v1/auth/register",
+//		req := httptest.NewRequest(http.MethodPost, "/request/v1/auth/register",
 //			strings.NewReader(reqBody.Encode()))
 //		rec := httptest.NewRecorder()
 //		c := e.NewContext(req, rec)
@@ -60,7 +60,7 @@ package controller_test
 //	//	rec := httptest.NewRecorder()
 //	//
 //	//	req := httptest.NewRequest(http.MethodPost,
-//	//		"/api/v1/auth/register", strings.NewReader(reqBody.Encode()))
+//	//		"/request/v1/auth/register", strings.NewReader(reqBody.Encode()))
 //	//	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 //	//
 //	//	e.ServeHTTP(rec, req)

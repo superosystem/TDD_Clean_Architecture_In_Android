@@ -10,6 +10,7 @@ import (
 type Order struct {
 	ID               uint           `json:"id" gorm:"primaryKey"`
 	ReferenceNumber  string         `json:"reference_number" gorm:"type:varchar(100);unique;not_null"`
+	Status           string         `json:"status" gorm:"type:enum('SUCCESS', 'PROCESS', 'PENDING', 'CANCELLED', 'ROLLBACK')" json:"status"`
 	TotalAmount      uint           `json:"total_amount" gorm:"not_null"`
 	Venue            string         `json:"venue" gorm:"type:varchar(100)"`
 	VenuePrice       uint           `json:"venue_price" gorm:"not_null"`
@@ -32,6 +33,7 @@ func FromDomain(domain *orders.Domain) *Order {
 	return &Order{
 		ID:               domain.ID,
 		ReferenceNumber:  domain.ReferenceNumber,
+		Status:           domain.Status,
 		TotalAmount:      domain.TotalAmount,
 		Venue:            domain.Venue,
 		VenuePrice:       domain.VenuePrice,
@@ -54,6 +56,7 @@ func (rec *Order) ToDomain() *orders.Domain {
 	return &orders.Domain{
 		ID:              rec.ID,
 		ReferenceNumber: rec.ReferenceNumber,
+		Status:          rec.Status,
 		TotalAmount:     rec.TotalAmount,
 		Venue:           rec.Venue,
 		Decoration:      rec.Decoration,

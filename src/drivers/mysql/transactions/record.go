@@ -11,7 +11,7 @@ import (
 type Transaction struct {
 	ID              uint           `json:"id" gorm:"primaryKey"`
 	ReferenceNumber string         `json:"reference_number" gorm:"type:varchar(100);unique;not_null"`
-	Status          string         `json:"status" gorm:"type:enum('PAID OFF', 'PROCESS', 'CANCELLED')" json:"status"`
+	Status          string         `json:"status" gorm:"type:enum('SUCCESS', 'PROCESS', 'PENDING', 'CANCELLED', 'ROLLBACK')" json:"status"`
 	Cred            uint           `json:"cred" gorm:"not_null"`
 	Debt            uint           `json:"debt" gorm:"not_null"`
 	Total           uint           `json:"total" gorm:"not_null"`

@@ -66,6 +66,10 @@ func (c *Controller) Create(ctx echo.Context) error {
 
 func (c *Controller) Update(ctx echo.Context) error {
 	var ID string = ctx.Param("id")
+	if err := ctx.Bind(&ID); err != nil {
+		return ctx.JSON(http.StatusBadRequest,
+			helper.MessageErrorResponse(constant.ErrInvalidRequest.Error()))
+	}
 
 	input := request.Vendor{}
 	if err := ctx.Bind(&input); err != nil {
@@ -79,6 +83,21 @@ func (c *Controller) Update(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, response.FromDomain(*rec))
+}
+
+func (c *Controller) Delete(ctx echo.Context) error {
+	var ID string = ctx.Param("id")
+	if err := ctx.Bind(&ID); err != nil {
+		return ctx.JSON(http.StatusBadRequest,
+			helper.MessageErrorResponse(constant.ErrInvalidRequest.Error()))
+	}
+
+	deleted := c.vendorUseCase.Delete(ID)
+	if deleted == false {
+		return ctx.JSON(http.StatusNotFound, helper.MessageErrorResponse(constant.ErrRecordNotFound.Error()))
+	}
+
+	return ctx.JSON(http.StatusOK, helper.MessageErrorResponse("Success delete vendor"))
 }
 
 func (c *Controller) FindAll(ctx echo.Context) error {
@@ -101,6 +120,25 @@ func (c *Controller) FindByID(ctx echo.Context) error {
 	}
 
 	rec, err := c.vendorUseCase.GetByID(ID)
+	if err != nil {
+		if errors.Is(err, constant.ErrRecordNotFound) {
+			return ctx.JSON(http.StatusNotFound, helper.MessageErrorResponse(constant.ErrRecordNotFound.Error()))
+		} else {
+			return ctx.JSON(http.StatusInternalServerError, helper.MessageErrorResponse(err.Error()))
+		}
+	}
+
+	return ctx.JSON(http.StatusOK, response.FromDomain(*rec))
+}
+
+func (c *Controller) FindByName(ctx echo.Context) error {
+	var name = ctx.Param("name")
+	if err := ctx.Bind(&name); err != nil {
+		return ctx.JSON(http.StatusBadRequest,
+			helper.MessageErrorResponse(constant.ErrInvalidRequest.Error()))
+	}
+
+	rec, err := c.vendorUseCase.GetByName(name)
 	if err != nil {
 		if errors.Is(err, constant.ErrRecordNotFound) {
 			return ctx.JSON(http.StatusNotFound, helper.MessageErrorResponse(constant.ErrRecordNotFound.Error()))

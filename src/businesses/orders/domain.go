@@ -8,6 +8,7 @@ import (
 type Domain struct {
 	ID               uint
 	ReferenceNumber  string
+	Status           string
 	TotalAmount      uint
 	Venue            string
 	VenuePrice       uint
@@ -26,7 +27,7 @@ type Domain struct {
 }
 
 type Repository interface {
-	Create(domain *Domain) error
+	Create(domain *Domain) (*Domain, error)
 	Update(ID string, domain Domain) (*Domain, error)
 	Delete(ID string) bool
 	GetAll() *[]Domain
@@ -35,7 +36,7 @@ type Repository interface {
 }
 
 type UseCase interface {
-	Create(domain *Domain) error
+	Create(domain *Domain) (*Domain, error)
 	Update(ID string, domain Domain) (*Domain, error)
 	Delete(ID string) bool
 	GetAll() *[]Domain
