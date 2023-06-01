@@ -61,7 +61,7 @@ func (c *Controller) SignUp(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusCreated,
-		helper.SuccessCreatedResponse("user has been created"))
+		helper.MessageSuccessResponse("user has been created"))
 }
 
 func (c *Controller) SignIn(ctx echo.Context) error {
@@ -146,7 +146,6 @@ func (c *Controller) Update(ctx echo.Context) error {
 	}
 
 	updatedUser, err := c.userUseCase.Update(token.UserId, input.ToDomainUserUpdate())
-
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, helper.MessageErrorResponse(err.Error()))
 	}

@@ -8,8 +8,11 @@ import (
 
 	_driver "github.com/superosystem/bantumanten-backend/src/drivers"
 
-	_userUseCase "github.com/superosystem/bantumanten-backend/src/businesses/users"
+	_user "github.com/superosystem/bantumanten-backend/src/businesses/users"
 	_userController "github.com/superosystem/bantumanten-backend/src/controllers/users"
+
+	_vendor "github.com/superosystem/bantumanten-backend/src/businesses/vendors"
+	_vendorController "github.com/superosystem/bantumanten-backend/src/controllers/vendors"
 )
 
 type Config struct {
@@ -23,13 +26,15 @@ type Config struct {
 
 func (cfg *Config) Start() {
 	authMiddleware := middleware.NewAuthMiddleware(cfg.JwtConfig)
-	registerUserRoute(cfg, authMiddleware)
+	addUserRoutes(cfg, authMiddleware)
+	addVendorRoutes(cfg, authMiddleware)
 }
 
-func registerUserRoute(cfg *Config, authMiddleware *middleware.AuthMiddleware) {
+// USER ROUTES
+func addUserRoutes(cfg *Config, authMiddleware *middleware.AuthMiddleware) {
 	// USER DI
 	userRepository := _driver.NewUserRepository(cfg.MySQLCONN)
-	userUseCase := _userUseCase.NewUserUseCase(userRepository, cfg.JwtConfig)
+	userUseCase := _user.NewUserUseCase(userRepository, cfg.JwtConfig)
 	userController := _userController.NewUserController(userUseCase, cfg.JwtConfig)
 
 	// ROUTES
@@ -43,5 +48,23 @@ func registerUserRoute(cfg *Config, authMiddleware *middleware.AuthMiddleware) {
 	user.GET("/:id", userController.FindByID, authMiddleware.IsAdminRole)
 	user.GET("/:email", userController.FindByEmail, authMiddleware.IsAdminRole)
 	user.PUT("", userController.Update)
+
+}
+
+// VENDOR ROUTES
+func addVendorRoutes(cfg *Config, authMiddleware *middleware.AuthMiddleware) {
+	// VENDOR DI
+	vendorRepository := _driver.NewVendorRepository(cfg.MySQLCONN)
+	vendorUseCase := _vendor.NewVendorUseCase(vendorRepository, cfg.JwtConfig)
+	vendorController := _vendorController.NewVendorController(vendorUseCase, cfg.JwtConfig)
+
+	// ROUTES
+	v1 := cfg.Echo.Group("/api/v1")
+	vendor := v1.Group("/vendors", authMiddleware.IsAuthenticated())
+	vendor.POST("", vendorController.Create, authMiddleware.IsAdminRole)
+	vendor.PUT("", vendorController.Update, authMiddleware.IsAdminRole)
+	vendor.GET("", vendorController.FindAll, authMiddleware.IsAdminRole)
+	vendor.GET("/:id", vendorController.FindByID)
+	vendor.GET("/:type", vendorController.FindByType)
 
 }

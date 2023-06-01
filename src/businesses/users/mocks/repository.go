@@ -108,30 +108,16 @@ func (_m *Repository) GetByID(ID string) (*users.Domain, error) {
 	return r0, r1
 }
 
-// IsExistUser provides a mock function with given fields: ID, email
-func (_m *Repository) IsExistUser(ID string, email string) bool {
-	ret := _m.Called(ID, email)
-
-	var r0 bool
-	if rf, ok := ret.Get(0).(func(string, string) bool); ok {
-		r0 = rf(ID, email)
-	} else {
-		r0 = ret.Get(0).(bool)
-	}
-
-	return r0
-}
-
 // Update provides a mock function with given fields: ID, domain
-func (_m *Repository) Update(ID string, domain *users.Domain) (*users.Domain, error) {
+func (_m *Repository) Update(ID string, domain users.Domain) (*users.Domain, error) {
 	ret := _m.Called(ID, domain)
 
 	var r0 *users.Domain
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string, *users.Domain) (*users.Domain, error)); ok {
+	if rf, ok := ret.Get(0).(func(string, users.Domain) (*users.Domain, error)); ok {
 		return rf(ID, domain)
 	}
-	if rf, ok := ret.Get(0).(func(string, *users.Domain) *users.Domain); ok {
+	if rf, ok := ret.Get(0).(func(string, users.Domain) *users.Domain); ok {
 		r0 = rf(ID, domain)
 	} else {
 		if ret.Get(0) != nil {
@@ -139,7 +125,7 @@ func (_m *Repository) Update(ID string, domain *users.Domain) (*users.Domain, er
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string, *users.Domain) error); ok {
+	if rf, ok := ret.Get(1).(func(string, users.Domain) error); ok {
 		r1 = rf(ID, domain)
 	} else {
 		r1 = ret.Error(1)

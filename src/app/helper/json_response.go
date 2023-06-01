@@ -92,3 +92,9 @@ func MessageErrorResponse(message string) BaseMessageResponse {
 		Message: message,
 	}
 }
+
+func MessageSuccessResponse(message string) BaseMessageResponse {
+	return BaseMessageResponse{
+		Message: message,
+	}
+}

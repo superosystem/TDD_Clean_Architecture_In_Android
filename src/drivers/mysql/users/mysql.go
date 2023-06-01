@@ -7,20 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
-type userRepository struct {
+type repository struct {
 	conn *gorm.DB
 }
 
 func NewMySQLRepository(conn *gorm.DB) users.Repository {
-	return &userRepository{
+	return &repository{
 		conn: conn,
 	}
 }
 
-func (u userRepository) Create(domain *users.Domain) error {
+func (r repository) Create(domain *users.Domain) error {
 	rec := FromDomain(domain)
 
-	err := u.conn.Model(User{}).Create(&rec).Error
+	err := r.conn.Model(User{}).Create(&rec).Error
 	if err != nil {
 		return err
 	}
@@ -28,26 +28,26 @@ func (u userRepository) Create(domain *users.Domain) error {
 	return nil
 }
 
-func (u userRepository) Update(ID string, domain users.Domain) (*users.Domain, error) {
+func (r repository) Update(ID string, domain users.Domain) (*users.Domain, error) {
 	rec := FromDomain(&domain)
 
-	err := u.conn.Model(User{}).Where("id = ?", ID).Updates(&rec).Error
+	err := r.conn.Model(User{}).Where("id = ?", ID).Updates(&rec).Error
 	if err != nil {
 		return nil, err
 	}
-	u.conn.Model(User{}).Where("id = ?", ID).First(&rec)
+	r.conn.Model(User{}).Where("id = ?", ID).First(&rec)
 	return rec.ToDomain(), nil
 }
 
-func (u userRepository) Delete(ID string) bool {
+func (r repository) Delete(ID string) bool {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u userRepository) GetAll() *[]users.Domain {
+func (r repository) GetAll() *[]users.Domain {
 	var rec []User
 
-	u.conn.Model(&User{}).Find(&rec)
+	r.conn.Model(&User{}).Find(&rec)
 
 	var usersDomain []users.Domain
 
@@ -58,10 +58,10 @@ func (u userRepository) GetAll() *[]users.Domain {
 	return &usersDomain
 }
 
-func (u userRepository) GetByID(ID string) (*users.Domain, error) {
+func (r repository) GetByID(ID string) (*users.Domain, error) {
 	var rec = User{}
 
-	err := u.conn.Model(User{}).Where("id = ?", ID).First(&rec).Error
+	err := r.conn.Model(User{}).Where("id = ?", ID).First(&rec).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, constant.ErrUserNotFound
@@ -71,10 +71,10 @@ func (u userRepository) GetByID(ID string) (*users.Domain, error) {
 	return rec.ToDomain(), nil
 }
 
-func (u userRepository) GetByEmail(email string) (*users.Domain, error) {
+func (r repository) GetByEmail(email string) (*users.Domain, error) {
 	var rec = User{}
 
-	err := u.conn.Model(User{}).Where("email = ?", email).First(&rec).Error
+	err := r.conn.Model(User{}).Where("email = ?", email).First(&rec).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, constant.ErrUserNotFound

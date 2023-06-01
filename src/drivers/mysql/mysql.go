@@ -2,7 +2,12 @@ package mysql
 
 import (
 	"fmt"
+	"github.com/superosystem/bantumanten-backend/src/drivers/mysql/orders"
+	"github.com/superosystem/bantumanten-backend/src/drivers/mysql/payments"
+	"github.com/superosystem/bantumanten-backend/src/drivers/mysql/schedules"
+	"github.com/superosystem/bantumanten-backend/src/drivers/mysql/transactions"
 	"github.com/superosystem/bantumanten-backend/src/drivers/mysql/users"
+	"github.com/superosystem/bantumanten-backend/src/drivers/mysql/vendors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -39,7 +44,14 @@ func (cfg *ConfigMySQL) InitMySQLDatabase() *gorm.DB {
 }
 
 func MySQLAutoMigrate(db *gorm.DB) {
-	_ = db.AutoMigrate(&users.User{})
+	_ = db.AutoMigrate(
+		&users.User{},
+		&vendors.Vendor{},
+		&orders.Order{},
+		&transactions.Transaction{},
+		&payments.Payment{},
+		&schedules.Schedule{},
+	)
 }
 
 func CloseDB(db *gorm.DB) error {

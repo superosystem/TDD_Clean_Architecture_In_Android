@@ -4,7 +4,8 @@ import (
 	"context"
 	"github.com/labstack/echo/v4"
 	_config "github.com/superosystem/bantumanten-backend/src/app/config"
-	"github.com/superosystem/bantumanten-backend/src/app/routes"
+	_middleware "github.com/superosystem/bantumanten-backend/src/app/middleware"
+	_routes "github.com/superosystem/bantumanten-backend/src/app/routes"
 	_dbDriver "github.com/superosystem/bantumanten-backend/src/drivers/mysql"
 	"log"
 	"net/http"
@@ -37,7 +38,10 @@ func main() {
 	// ECHO
 	e := echo.New()
 
-	route := routes.Config{
+	// CORS
+	e.Use(_middleware.CORS())
+
+	route := _routes.Config{
 		Echo:      e,
 		MySQLCONN: mysqlDB,
 		JwtConfig: jwtConfig,
