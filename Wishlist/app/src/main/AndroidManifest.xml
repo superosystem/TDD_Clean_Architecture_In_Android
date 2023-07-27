@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".WishlistApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wishlist"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
+        <!-- Splash Activity -->
+        <activity android:name=".ui.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main Activity -->
+        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.wishlist.WishlistDetailActivity" />
     </application>
 
 </manifest>
