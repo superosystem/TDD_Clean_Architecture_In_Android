@@ -1,7 +1,0 @@
-package constant
-
-var (
-	PAYMENT_METHOD_BANK = "BANK"
-	PAYMENT_METHOD_VA   = "VA"
-	PAYMENT_METHOD_QRIS = "MERCHENT"
-)
